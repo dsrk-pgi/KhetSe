@@ -1,0 +1,20 @@
+{
+  "name": "KhetSe — Farm to Fork",
+  "short_name": "KhetSe",
+  "description": "Farm-to-fork fresh vegetable delivery — Mohanlalganj & Gaura. Order fresh vegetables on your phone.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "categories": ["shopping", "food"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

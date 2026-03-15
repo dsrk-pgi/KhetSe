@@ -1,0 +1,272 @@
+1.Build a high-end, mobile-first Progressive Web App (PWA) called 'KhetSe'.
+Concept: A premium 'Farm-to-Fork' raw vegetable delivery service for Mohanlalganj and Gaura.
+Tech Stack: React, Tailwind CSS, and Lucide-react icons.
+
+1. Visual Design & Branding:
+
+App Name: KhetSe.
+
+Color Palette: Nature-Green (#16a34a) and Crisp White. Use a clean, 'Quick Commerce' UI like Blinkit.
+
+Hero Section: A 'Special Announcement' banner at the top (editable via Admin) and a search bar.
+
+Product Grid: Beautiful cards with high-quality vegetable images (use Unsplash placeholders), name, unit (e.g., 500g, 1kg), and a '+' button to add to cart.
+
+2. Zero-Friction 'No-Login' Checkout:
+
+Cart System: A floating cart button at the bottom showing the total.
+
+Checkout Flow: When clicking 'Place Order', show a single-page form:
+
+Mobile Number (Mandatory).
+
+Delivery Address (Text area).
+
+Zone Selection Dropdown: - 'Local (Mohanlalganj/Gaura)' -> Fee: ₹0 if Total > ₹150, else ₹15.
+
+'Lucknow Outskirts (5-8km)' -> Fee: ₹30.
+
+'Extended (8km+)' -> Fee: ₹50.
+
+Data Persistence: Save the Mobile Number and Address in localStorage so it's pre-filled when the customer returns.
+
+3. WhatsApp Integration:
+
+On clicking 'Confirm Order', open a WhatsApp message to [Your Phone Number] with this format:
+📦 NEW ORDER - KHETSE
+Items: [List items & qty]
+Subtotal: ₹[X]
+Delivery Fee: ₹[Y] (Zone: [Zone Name])
+Total Payable: ₹[Grand Total]
+Customer Mobile: [Mobile]
+Address: [Address]
+
+4. Admin Dashboard (Route: /admin):
+
+Inventory Table: A simple list where I can update 'Purchase Price' for each item.
+
+Pricing Logic: Automatically calculate 'Selling Price' using a 30% margin, then use the MROUND logic to round the final price to the nearest ₹5.
+
+Announcement Toggle: A simple text box to change the top banner message.
+
+Password Protect: A simple 'Admin Key' prompt before accessing this page.
+
+5. Mobile Features:
+
+Ensure the app is fully responsive.
+
+Include a manifest.json so users can 'Add to Home Screen'."
+
+2.-Update the KhetSe app with the following features:
+
+1. Bilingual Support (Hindi/English Toggle):
+
+Add a floating toggle button at the top (e.g., 'हिन्दी | EN').
+
+All text (Product names, UI buttons, Cart, and Checkout) should switch between Hindi and English.
+
+Example Labels:
+
+English: 'Add to Cart', 'Place Order', 'Fresh Vegetables'.
+
+Hindi: 'कार्ट में जोड़ें', 'ऑर्डर दें', 'ताजी सब्जियां'.
+
+2. Enhanced WhatsApp Greeting (Number: 9140189586):
+
+When the customer clicks 'Confirm Order', the WhatsApp link should now include a pre-filled greeting based on the selected language:
+
+Hindi: 'नमस्ते! मैं KhetSe ऐप से ताजी सब्जियां ऑर्डर करना चाहता/चाहती हूँ। यहाँ मेरा विवरण है...'
+
+English: 'Namaste! I would like to order fresh vegetables from the KhetSe app. Here are my details...'
+
+Ensure the rest of the order details follow this greeting.
+
+3. Payment Integration (QR Code):
+
+In the Checkout Modal, after the customer enters their details, show a 'Payment Method' section.
+
+Display the text: 'Scan to Pay using PhonePe/UPI'.
+
+Display the QR Code: Use the image provided (referenced as payment_qr.jpeg). Ensure it is clearly visible but fits well within the mobile screen.
+
+Below the QR code, show the Name: PRIYANKA KUMARI.
+
+Add a note: 'Please share a screenshot of the payment on WhatsApp after placing the order.'
+
+4. WhatsApp Connection Button:
+
+Add a 'Chat with Us' or 'Help' button on the home screen that opens a WhatsApp chat to 9140189586 with the message:
+
+Hindi: 'नमस्ते KhetSe, मुझे सहायता चाहिए।'
+
+English: 'Namaste KhetSe, I need some help with my order.'
+
+5. Styling:
+
+Ensure the QR code has a clean white border/frame to make it look professional.
+
+Keep the font clean and readable for both Hindi and English scripts."
+3.-Refine the KhetSe app to be 100% compatible and optimized for mobile devices. Please implement the following:
+
+Viewport Meta Tag: Ensure the <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/> tag is in the head to prevent awkward zooming on input fields.
+
+Bottom Navigation/Cart: Instead of a desktop-style top cart, implement a Sticky Bottom Bar that shows:
+
+The total number of items and price.
+
+A large 'View Cart' or 'Checkout' button that is easy to tap with a thumb.
+
+Grid Layout: On mobile screens, show exactly 2 columns for vegetables so the images and text are large enough to read. On very small screens, switch to a 1-column list view.
+
+Touch-Friendly UI: Ensure all buttons have a minimum height of 48px for easy tapping. Add 'Active' states (visual feedback) when a user taps a button.
+
+Image Handling: Use aspect-square and object-cover for vegetable images so they look uniform and don't look stretched on tall phone screens.
+
+Bilingual Toggle: Place the Hindi/English toggle in a fixed, easy-to-reach spot (like the top right or bottom left) so users can switch languages instantly.
+
+PWA Manifest: Generate a manifest.json file so that when I open the link on my phone, I get the 'Add to Home Screen' prompt, making it behave like a real installed app."
+4-Update the KhetSe app with a fixed product database and a functional Admin Dashboard.
+
+1. Fix Image Mismatch:
+
+Create a products.js data file. Use the following logic to ensure the correct image shows for each item:
+
+Potato/आलू: Use a high-quality potato image URL.
+
+Tomato/टमाटर: Use a red tomato image URL.
+
+Cauliflower/फूलगोभी: Use a white cauliflower image URL.
+
+Spinach/पालक: Use a green leafy spinach image URL.
+
+(Instruct Cursor to use specific Unsplash Source URLs like https://source.unsplash.com/featured/?cauliflower to ensure they match the names).
+
+2. Admin Dashboard Functionality:
+
+Create a protected /admin route.
+
+Daily Price Update: Show a table of all vegetables. Provide an input field for the 'Mandi Price' (Purchase Price).
+
+Auto-Pricing: When the admin enters the Mandi Price, the 'Selling Price' must automatically update using the 30% margin + Rounding to nearest ₹5 logic.
+
+Stock Toggle: Add a 'In Stock / Out of Stock' switch for each item. If 'Out of Stock' is selected, hide the 'Add to Cart' button on the customer view.
+
+Announcement Bar: Provide a text area to update the 'Special Discount' or 'New Arrival' message that appears on the home screen.
+
+3. Settings Page:
+
+Add a section in Admin to update the WhatsApp Number and Delivery Fees for the three zones without touching the code.
+
+Save these settings in localStorage so they persist even if the page is refreshed.
+
+4. Visual Feedback:
+
+When the Admin clicks 'Save Changes', show a 'Success' toast notification or green checkmark.
+
+Ensure the Admin Dashboard is also mobile-responsive so it can be managed from a phone while at the Mandi."
+5-Please update the product database for KhetSe. Use the following array of objects. Each object must include id, nameEn, nameHi, image, unit, and basePrice.
+
+The logic for pricing: Set basePrice as a default, but ensure the Admin Dashboard can override these values and the app calculates the 30% margin + rounding to the nearest ₹5 for the customer view.
+
+Product List:
+
+Potato (आलू)
+
+Image: https://images.unsplash.com/photo-1518977676601-b53f02ac10dd?q=80&w=500&auto=format&fit=crop
+
+Unit: 1 kg
+
+Tomato (टमाटर)
+
+Image: https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?q=80&w=500&auto=format&fit=crop
+
+Unit: 1 kg
+
+Cauliflower (फूलगोभी)
+
+Image: https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?q=80&w=500&auto=format&fit=crop
+
+Unit: 1 pc
+
+Spinach (पालक)
+
+Image: https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=500&auto=format&fit=crop
+
+Unit: 250g (Bundle)
+
+Onion (प्याज)
+
+Image: https://images.unsplash.com/photo-1508747703725-719777637510?q=80&w=500&auto=format&fit=crop
+
+Unit: 1 kg
+
+Green Chilli (हरी मिर्च)
+
+Image: https://images.unsplash.com/photo-1588252303782-cb80119abd6d?q=80&w=500&auto=format&fit=crop
+
+Unit: 100g
+
+Ginger (अदरक)
+
+Image: https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=500&auto=format&fit=crop
+
+Unit: 100g
+
+Coriander (धनिया)
+
+Image: https://images.unsplash.com/photo-1588871883011-3701657c7d24?q=80&w=500&auto=format&fit=crop
+
+Unit: 100g (Bundle)
+
+Carrot (गाजर)
+
+Image: https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=500&auto=format&fit=crop
+
+Unit: 500g
+
+Ladies Finger/Okra (भिंडी)
+
+Image: https://images.unsplash.com/photo-1464454709131-ffd692591ee5?q=80&w=500&auto=format&fit=crop
+
+Unit: 500g
+
+Implementation Instruction:
+Ensure that when the user toggles the language to Hindi, the app displays nameHi, and when in English, it displays nameEn. The images must remain fixed to the correct vegetable ID. Ensure all images use object-fit: cover to look uniform."
+6-Update the product database to use my local images stored in the /public/images folder. Please map the following files to their respective products. Do not change any other logic, bilingual settings, or pricing calculations.
+
+Local Image Mapping:
+
+Beans: /images/beans.jpeg
+
+Cabbage: /images/cabbage.jpg
+
+Coriander: /images/Coriender LeaVES.png
+
+Cucumber: /images/fresh-cucumbers.jpg
+
+Ginger: /images/ginger.png
+
+Green Chillies: /images/Green Chilies.png
+
+Ladies Finger: /images/ladies finger.jpg
+
+Onions: /images/Onions.jpeg
+
+Potatoes: /images/POTATOS.png
+
+Radish: /images/Radish.jpg
+
+Technical Instructions:
+
+Update the image path in the products array for each item to match the file names exactly as written above (including spaces and extensions).
+
+Ensure the img tags in the UI use object-fit: cover and have a fixed aspect ratio so the cards remain uniform despite different image sizes.
+
+Keep the bilingual names (Hindi/English) as they were."
+
+Important Tips for You:
+File Names: I noticed some of your files have spaces (e.g., ladies finger.jpg) and mixed capitalization (e.g., POTATOS.png). The prompt above handles this, but if you rename them in your folder later, the app will show a broken image.
+
+Case Sensitivity: Coding is sensitive to capital letters. Make sure POTATOS.png in the folder is exactly POTATOS.png (not potatos.png) in the code.
+
+The "Public" Folder: In React/Next.js, anything in the public folder is accessed using a simple / path. So /public/images/beans.jpeg becomes just /images/beans.jpeg in the code.
