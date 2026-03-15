@@ -44,7 +44,7 @@ Output is in `dist/`. Serve with any static host. For PWA â€œAdd to Home Screenâ
 
 ## Payment QR
 
-Place your UPI/PhonePe QR image as **`public/payment_qr.jpeg`** so it appears in the checkout payment section.
+Place your UPI/PhonePe QR image as **`public/images/QR-Code For Payment.jpeg`** so it appears when the customer selects Online Payment (UPI/PhonePe) in checkout.
 
 ## Bilingual (Hindi/English)
 

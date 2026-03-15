@@ -9,7 +9,7 @@ Commit and push **all project files except** those ignored by `.gitignore`:
 - **Source code:** `src/` (all React, TypeScript, CSS, data, i18n)
 - **Config:** `index.html`, `package.json`, `package-lock.json`, `vite.config.ts`, `tsconfig*.json`, `tailwind.config.js`, `postcss.config.js`, `eslint.config.js`
 - **Public assets:** `public/` folder and its contents:
-  - **`public/payment_qr.jpeg`** — your UPI/PhonePe QR code image (required for online payment)
+  - **`public/images/QR-Code For Payment.jpeg`** — your UPI/PhonePe QR code image (required for online payment when customer selects Online Payment)
   - `public/favicon.svg`, `public/manifest.json`, `public/icons.svg` (if present)
 - **Docs:** `README.md`, `DEPLOY.md`
 - **Netlify:** `netlify.toml`
@@ -56,7 +56,7 @@ git push -u origin main
 
 ## Checklist before deploy
 
-- [ ] **QR code:** Add your UPI/PhonePe QR image as **`public/payment_qr.jpeg`** so online payment shows the QR and number (9140189586).
+- [ ] **QR code:** Add your UPI/PhonePe QR image as **`public/images/QR-Code For Payment.jpeg`** so online payment shows the QR and number (9140189586).
 - [ ] **Admin key:** Set your admin password in the app (Admin → Settings) or leave default.
 - [ ] **HTTPS:** Netlify provides HTTPS by default; required for PWA “Add to Home Screen”.
 

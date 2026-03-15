@@ -13,6 +13,9 @@ import {
 
 /** WhatsApp number that receives all Place Order messages (full cart). */
 const ORDER_WHATSAPP_NUMBER = '9140189586'
+
+/** Payment QR image in public folder (spaces URL-encoded). */
+const PAYMENT_QR_IMAGE = '/images/QR-Code%20For%20Payment.jpeg'
 import { useLanguage } from '../context/LanguageContext'
 import type { Lang } from '../i18n/translations'
 import { WHATSAPP_ORDER_GREETING, zoneNameHi } from '../i18n/translations'
@@ -87,6 +90,7 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [savedMessage, setSavedMessage] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState(false)
 
   useEffect(() => {
     setMobile(loadCustomerMobile())
@@ -135,9 +139,28 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
     const num = ORDER_WHATSAPP_NUMBER.replace(/\D/g, '') || '9140189586'
     const url = `https://wa.me/${num}?text=${encodeURIComponent(text)}`
     window.open(url, '_blank', 'noopener')
-    onOrderPlaced()
     setSubmitting(false)
-    onClose()
+    setOrderSuccess(true)
+    // Show thank-you message, then clear cart and close after delay
+    setTimeout(() => {
+      onOrderPlaced()
+      onClose()
+    }, 3500)
+  }
+
+  if (orderSuccess) {
+    return (
+      <div className="flex flex-col h-full min-h-0 items-center justify-center p-6 text-center">
+        <div className="rounded-full bg-[#16a34a]/10 p-4 mb-4">
+          <svg className="size-14 text-[#16a34a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('order.success.title')}</h2>
+        <p className="text-neutral-600 mb-1" lang={lang === 'hi' ? 'hi' : undefined}>{t('order.success.message')}</p>
+        <p className="text-sm text-neutral-500" lang={lang === 'hi' ? 'hi' : undefined}>{t('order.success.footer')}</p>
+      </div>
+    )
   }
 
   return (
@@ -241,7 +264,7 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
                   style={{ minWidth: 220, minHeight: 220 }}
                 >
                   <img
-                    src="/payment_qr.jpeg"
+                    src={PAYMENT_QR_IMAGE}
                     alt="UPI / PhonePe QR Code - Scan to pay"
                     width={200}
                     height={200}

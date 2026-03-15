@@ -43,6 +43,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     'alert.invalid.mobile': 'Please enter a valid 10-digit mobile number.',
     'alert.enter.address': 'Please enter your delivery address.',
     'footer.about': 'Serving your local area with the freshest produce.',
+    'order.success.title': 'Thank you for your order!',
+    'order.success.message': "We've received your order and will deliver it soon. You can close this and we'll be in touch.",
+    'order.success.footer': 'Have a great day! — Team KhetSe',
   },
   hi: {
     'hero.tagline': 'Premium Farm-to-Fork Delivery',
@@ -86,6 +89,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     'alert.invalid.mobile': 'कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।',
     'alert.enter.address': 'कृपया अपना डिलीवरी पता दर्ज करें।',
     'footer.about': 'आपके इलाके को ताज़ी उपज से सेवा।',
+    'order.success.title': 'आपका ऑर्डर मिल गया!',
+    'order.success.message': 'हमने आपका ऑर्डर प्राप्त कर लिया है और जल्द ही डिलीवरी करेंगे। आप इसे बंद कर सकते हैं, हम संपर्क में रहेंगे।',
+    'order.success.footer': 'आपका दिन शुभ हो! — टीम KhetSe',
   },
 }
 
