@@ -6,11 +6,13 @@ import {
   loadCustomerAddress,
   saveCustomerMobile,
   saveCustomerAddress,
-  loadWhatsAppNumber,
   getDeliveryFeeFromSettings,
   getZonesWithFees,
   loadDeliverySettings,
 } from '../data'
+
+/** WhatsApp number that receives all Place Order messages (full cart). */
+const ORDER_WHATSAPP_NUMBER = '9140189586'
 import { useLanguage } from '../context/LanguageContext'
 import type { Lang } from '../i18n/translations'
 import { WHATSAPP_ORDER_GREETING, zoneNameHi } from '../i18n/translations'
@@ -84,6 +86,7 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
   const [zoneId, setZoneId] = useState<ZoneId>('local')
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [savedMessage, setSavedMessage] = useState(false)
 
   useEffect(() => {
     setMobile(loadCustomerMobile())
@@ -95,6 +98,14 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
   const total = subtotal + deliveryFee
   const zone = zones.find((z) => z.id === zoneId)
   const zoneDisplayName = lang === 'hi' ? (zoneNameHi[zoneId] ?? zone?.name) : (zone?.name ?? zoneId)
+
+  const handleSaveDetails = () => {
+    const m = mobile.trim()
+    if (m.length >= 10) saveCustomerMobile(m)
+    if (address.trim()) saveCustomerAddress(address.trim())
+    setSavedMessage(true)
+    setTimeout(() => setSavedMessage(false), 2000)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -121,7 +132,8 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
       address.trim(),
       paymentMethod
     )
-    const url = `https://wa.me/${loadWhatsAppNumber()}?text=${encodeURIComponent(text)}`
+    const num = ORDER_WHATSAPP_NUMBER.replace(/\D/g, '') || '9140189586'
+    const url = `https://wa.me/${num}?text=${encodeURIComponent(text)}`
     window.open(url, '_blank', 'noopener')
     onOrderPlaced()
     setSubmitting(false)
@@ -129,8 +141,8 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <form onSubmit={handleSubmit} className="flex flex-col h-full min-h-0">
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
         <h2 className="text-lg font-bold text-neutral-900">{t('checkout.place.order')}</h2>
 
         <div>
@@ -219,24 +231,44 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
             </label>
           </div>
 
-          {/* Show QR only when Online Payment (UPI) is selected */}
+          {/* Show QR and UPI number when Online Payment (UPI) is selected */}
           {paymentMethod === 'upi' && (
-            <>
-              <p className="text-neutral-600 text-sm pt-1">{t('checkout.scan.pay')}</p>
-              <div className="flex justify-center">
-                <div className="rounded-lg border-4 border-white bg-white shadow-md p-2.5 max-w-[200px] aspect-square ring-2 ring-neutral-100">
+            <div className="space-y-3 pt-2">
+              <p className="text-neutral-600 text-sm">{t('checkout.scan.pay')}</p>
+              <div className="flex flex-col items-center gap-3">
+                <div
+                  className="rounded-xl border-2 border-neutral-200 bg-white p-3 shadow-md flex items-center justify-center"
+                  style={{ minWidth: 220, minHeight: 220 }}
+                >
                   <img
                     src="/payment_qr.jpeg"
-                    alt="UPI QR Code"
-                    className="w-full h-full object-contain rounded bg-white"
+                    alt="UPI / PhonePe QR Code - Scan to pay"
+                    width={200}
+                    height={200}
+                    className="size-[200px] object-contain rounded-lg bg-white"
+                    loading="eager"
                   />
                 </div>
+                <div className="text-center space-y-1 w-full rounded-lg bg-neutral-50 border border-neutral-200 p-3">
+                  <p className="font-semibold text-neutral-900">PRIYANKA KUMARI</p>
+                  <p className="text-sm text-neutral-600">
+                    {t('checkout.pay.via.number')}
+                  </p>
+                  <a
+                    href="tel:+919140189586"
+                    className="block text-lg font-bold text-[#16a34a] tracking-wide"
+                  >
+                    9140189586
+                  </a>
+                  <p className="text-xs text-neutral-500">
+                    {t('checkout.pay.qr.or.number')}
+                  </p>
+                </div>
               </div>
-              <p className="text-center font-semibold text-neutral-800">PRIYANKA KUMARI</p>
               <p className="text-xs text-neutral-600 text-center" lang={lang === 'hi' ? 'hi' : undefined}>
                 {t('checkout.payment.note')}
               </p>
-            </>
+            </div>
           )}
         </div>
 
@@ -256,21 +288,35 @@ export function CheckoutForm({ cart, subtotal, onClose, onOrderPlaced }: Props) 
         </div>
       </div>
 
-      <div className="p-4 border-t border-neutral-200 flex gap-3">
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex-1 min-h-[48px] py-2.5 rounded-lg border border-neutral-200 text-neutral-700 font-medium active:scale-[0.98] active:opacity-90 touch-manipulation"
-        >
-          {t('back')}
-        </button>
+      <div className="flex-shrink-0 p-4 border-t border-neutral-200 bg-white space-y-3">
+        {savedMessage && (
+          <p className="text-sm text-[#16a34a] font-medium text-center" role="status">
+            {t('checkout.saved')}
+          </p>
+        )}
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 min-h-[48px] py-2.5 rounded-lg border border-neutral-200 text-neutral-700 font-medium active:scale-[0.98] active:opacity-90 touch-manipulation"
+          >
+            {t('back')}
+          </button>
+          <button
+            type="button"
+            onClick={handleSaveDetails}
+            className="flex-1 min-h-[48px] py-2.5 rounded-lg border-2 border-[#16a34a] text-[#16a34a] font-semibold hover:bg-[#16a34a]/5 active:scale-[0.98] active:opacity-90 touch-manipulation"
+          >
+            {t('checkout.save')}
+          </button>
+        </div>
         <button
           type="submit"
           disabled={submitting || !paymentMethod}
-          className="flex-1 min-h-[48px] py-2.5 rounded-lg bg-[#16a34a] text-white font-semibold hover:bg-[#15803d] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 active:scale-[0.98] active:opacity-90 touch-manipulation"
+          className="w-full min-h-[48px] py-2.5 rounded-lg bg-[#16a34a] text-white font-semibold hover:bg-[#15803d] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 active:scale-[0.98] active:opacity-90 touch-manipulation"
         >
           {submitting ? <Loader2 className="size-5 animate-spin" /> : null}
-          {t('checkout.confirm')}
+          {t('checkout.place.order.button')}
         </button>
       </div>
     </form>
